@@ -33,19 +33,6 @@ trials_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -116,19 +103,6 @@ drug_response_df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -415,19 +389,6 @@ drug_response_mean_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -560,7 +521,7 @@ plt.show()
 #get mean per drug-timepoint pair
 drug_sites_mean_df = trials_df.pivot_table(values='Metastatic Sites', index=['Timepoint'], columns='Drug')
 #get standard error of mean per drug-timepoint pair
-drug_sites_sem_df = trials_df.pivot_table(values='Metastatic Sites', index=['Timepoint'], columns='Drug', 
+drug_sites_sem_df = trials_df.pivot_table(values='Metastatic Sites', index=['Timepoint'], columns='Drug',
                                           aggfunc=scipy.stats.sem)
 drug_sites_mean_df.head()
 ```
@@ -569,19 +530,6 @@ drug_sites_mean_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -716,19 +664,6 @@ survive_count_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -844,19 +779,6 @@ survive_count_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1003,9 +925,9 @@ vol_percent_change
 ```python
 fig, ax = plt.subplots(figsize=(8,8))
 #set number of items to plot
-ind = np.arange(len(include_in_analysis)) 
+ind = np.arange(len(include_in_analysis))
 #set widht of bars to plot
-width = 0.35 
+width = 0.35
 ax.set_title('Tumor Change Over 45 Day Treatment', fontsize=22)
 ax.set_xticklabels(include_in_analysis)
 ax.set_ylabel('% Tumor Volume Change', fontsize=16)
@@ -1029,4 +951,3 @@ plt.show()
 
 
 ![png](output_19_0.png)
-
