@@ -24,7 +24,7 @@ rnd.seed(12456)
 
 ### Generate Cities List
 
-Get random grid of 22*23 points in (latitude, longitude) 
+Get random grid of 22*23 points in (latitude, longitude)
 
 Latitude range: -90, 90
 
@@ -59,10 +59,10 @@ for indx, city in enumerate(cities):
     print(f'Processing record: {indx}; City: {city};\nURL: {url}')
     r_json = response.json()
     latitude = r_json['coord']['lat']
-    temperature = r_json['main']['temp_max'] 
+    temperature = r_json['main']['temp_max']
     humidity = r_json['main']['humidity']
     cloudiness = r_json['clouds']['all']
-    wind_speed = r_json['wind']['speed'] 
+    wind_speed = r_json['wind']['speed']
     latitudes_df.loc[indx, 'City'] = city
     latitudes_df.loc[indx, 'Latitude'] = latitude
     latitudes_df.loc[indx, 'Max Temperature'] = temperature
@@ -1038,7 +1038,7 @@ for indx, city in enumerate(cities):
     URL: http://api.openweathermap.org/data/2.5/weather?q=bluff&appid=c4c7cd621b32b64dab8036d138681984&units=imperial
     Processing record: 505; City: san isidro;
     URL: http://api.openweathermap.org/data/2.5/weather?q=san isidro&appid=c4c7cd621b32b64dab8036d138681984&units=imperial
-    
+
 
 
 ```python
@@ -1049,19 +1049,6 @@ latitudes_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1203,4 +1190,3 @@ plt.show();
 
 
 ![png](output_18_0.png)
-
