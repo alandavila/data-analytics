@@ -4,7 +4,7 @@
 ## Observed trends:
 * CBS happened to have the most positive sentiment measure in its tweets for the range sampler
 * The difference in sentiment compound score between the most positive outler (CBS) and the least positive outlet (Fox) is 6x
-* There is no visible temporal trend for any media outlet 
+* There is no visible temporal trend for any media outlet
 
 Dependencies
 
@@ -61,7 +61,7 @@ Save the per-tweet results in a pandas DataFrame
 
 
 ```python
-sentiment_df = pd.DataFrame(columns=['Source', 'Text', 'Date', 'Compound Score', 'Positive Score', 'Neutral Score', 
+sentiment_df = pd.DataFrame(columns=['Source', 'Text', 'Date', 'Compound Score', 'Positive Score', 'Neutral Score',
                                     'Negative Score'])
 current_df_indx = 0
 for target_user in news_outlets:
@@ -88,7 +88,7 @@ for target_user in news_outlets:
                 sentiment_df.loc[current_df_indx, 'Positive Score'] = pos
                 sentiment_df.loc[current_df_indx, 'Neutral Score'] = neu
                 sentiment_df.loc[current_df_indx, 'Negative Score'] = neg
-                                
+
                 current_df_indx = current_df_indx + 1
 ```
 
@@ -101,19 +101,6 @@ sentiment_df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -261,4 +248,3 @@ plt.show()
 
 
 ![png](output_20_0.png)
-
