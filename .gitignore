@@ -1,5 +1,6 @@
 *.DS_Store
 VBA/Multiple_year_stock_data.xlsx
 VBA/alphabtical*
-Python/*/.ipynb_checkpoints/*
-Python/api/config.py
+*.ipynb_checkpoints
+*config.py
+*__pycache__
