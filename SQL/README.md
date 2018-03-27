@@ -254,7 +254,7 @@ WHERE
 
 ```
 ## 7b. Use subqueries to display all actors who appear in the film Alone Trip.
-```
+```SQL
 SELECT
   CONCAT(actor.first_name, ' ', actor.last_name)
 AS
