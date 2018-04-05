@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 import numpy as np
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 
 
 #################################################
@@ -84,10 +84,10 @@ def temp_stats(start):
     """ json list of the minimum temperature, the average temperature, 
         and the max temperature for a given start """
 
-    results = session.query(Measurement.tobs).filter(Measurement.date > start).all()
-    list_results = [np.min(results), np.max(results), np.mean(results)]
+    results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs),\
+                            func.avg(Measurement.tobs)).filter(Measurement.date > start).all()
 
-    return jsonify(list_results)
+    return jsonify(results)
 
 
 @app.route("/api/v1.0/<start>/<end>")
@@ -95,11 +95,11 @@ def temp_stats_range(start, end):
     """ Return json list of the minimum temperature, the average temperature, 
         and the max temperature for a given start/end dates """
 
-    results = session.query(Measurement.tobs).filter(Measurement.date > start)\
-        .filtes(Measurement.date < end).all()
-    list_results = [np.min(results), np.max(results), np.mean(results)]
+    results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs),\
+                            func.avg(Measurement.tobs)).filter(Measurement.date > start)\
+        .filter(Measurement.date < end).all()
 
-    return jsonify(list_results)
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True)
