@@ -1,20 +1,16 @@
 import datetime as dt
+from flask import Flask, jsonify
 import numpy as np
-import pandas as pd
-
-import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
-
-from flask import Flask, jsonify
+from sqlalchemy import create_engine
 
 
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///hawaii.sqlite")
-
+#engine = create_engine("sqlite:///hawaii.sqlite")
+engine = create_engine("sqlite:///hawaii.sqlite", echo=False)
 # reflect an existing database into a new model
 Base = automap_base()
 # reflect the tables
@@ -91,7 +87,7 @@ def temp_stats(start):
     results = session.query(Measurement.tobs).filter(Measurement.date > start).all()
     list_results = [np.min(results), np.max(results), np.mean(results)]
 
-    return jsonify(list_results), 404
+    return jsonify(list_results)
 
 
 @app.route("/api/v1.0/<start>/<end>")
@@ -103,7 +99,7 @@ def temp_stats_range(start, end):
         .filtes(Measurement.date < end).all()
     list_results = [np.min(results), np.max(results), np.mean(results)]
 
-    return jsonify(list_results), 404
+    return jsonify(list_results)
 
 if __name__ == '__main__':
     app.run(debug=True)
