@@ -6,12 +6,27 @@ Created on Tue Apr 17 19:43:33 2018
 """
 # Dependencies
 from bs4 import BeautifulSoup
-from flask import Flask, render_template
-import pandas as pd
-import pymongo
-import requests
 from splinter import Browser
 import time
+
+def scrape_test():
+    mars_dict = {"_id":"5ad7fe01e9fd7b12e0fd3488",
+                 "news_title":"Bound for Mars: Countdown to First Interplanetary Launch from California",
+                 "news_p":"On May 5, millions of Californians may witness the historic first interplanetary launch from America’s West Coast.",
+                 "featured_image_url":"https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA22372-640x350.jpg",
+                 "mars_weather":"Sol 2024 (April 16, 2018), Sunny, high -7C/19F, low -76C/-104F, pressure at 7.20 hPa, daylight 05:26-17:21",
+                 "hemisphere_image_urls":[
+                         {"title":"Cerberus Hemisphere Enhanced",
+                          "img_url":"https://astrogeology.usgs.gov/cache/images/cfa62af2557222a02478f1fcd781d445_cerberus_enhanced.tif_full.jpg"},
+                         {"title":"Schiaparelli Hemisphere Enhanced",
+                          "img_url":"https://astrogeology.usgs.gov/cache/images/3cdd1cbf5e0813bba925c9030d13b62e_schiaparelli_enhanced.tif_full.jpg"},
+                         {"title":"Syrtis Major Hemisphere Enhanced",
+                          "img_url":"https://astrogeology.usgs.gov/cache/images/ae209b4e408bb6c3e67b6af38168cf28_syrtis_major_enhanced.tif_full.jpg"},
+                         {"title":"Valles Marineris Hemisphere Enhanced",
+                          "img_url":"https://astrogeology.usgs.gov/cache/images/7cf2da4bf549ed01c17f206327be4db7_valles_marineris_enhanced.tif_full.jpg"}
+                         ]
+                 }
+    return mars_dict
 
 def scrape():
     mars_dict = {}
@@ -101,55 +116,3 @@ def scrape():
     mars_dict['hemisphere_image_urls'] = hemisphere_image_urls
     
     return mars_dict
-
-
-# create instance of Flask app
-app = Flask(__name__)
-
-#craete mongo database
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
-client.drop_database('mars_db')
-db = client.mars_db 
-collection = db.mars_info
-
-# create route that renders index.html template
-@app.route("/scrape")
-def web_scrape():
-        #insert information scrapped form the web
-    scraped_info = scrape()
-    db.drop_collection('mars_info')
-    db.mars_info.insert_one(scraped_info)
-
-# create route that renders index.html template
-@app.route("/")
-def show_data():
-    
-#    conn = 'mongodb://localhost:27017'
-#    client = pymongo.MongoClient(conn)
-#    db = client.mars_db 
-#    collection = db.mars_info
-    mars_dict = db.collection.find()
-    print(mars_dict)
-
-    return render_template(
-        "index.html", 
-        mars_dict=mars_dict
-        )
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
