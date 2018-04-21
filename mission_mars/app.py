@@ -23,7 +23,7 @@ collection = db.mars_info
 @app.route("/scrape")
 def web_scrape():
     #insert information scrapped form the web
-    scraped_info = scrape_mars.scrape_test()
+    scraped_info = scrape_mars.scrape()
     db.drop_collection('mars_info')
     collection.insert_one(scraped_info)
     mars_dict = collection.find()
