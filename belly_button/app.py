@@ -29,7 +29,9 @@ samples_metadata  = Base.classes.samples_metadata
 
 # Create our session (link) from Python to the DB
 session = Session(engine)
-
+######################################################
+#Create a pandas df with contents of sampoles table
+df_samples = pd.read_sql_table('samples', engine)
 #################################################
 # Flask Setup
 #################################################
@@ -107,8 +109,8 @@ def get_sample(sample):
         samples_metadata.LOCATION,
         samples_metadata.SAMPLEID
     ]
-    id = sample[3:]
-    results = session.query(*query).filter(samples_metadata.SAMPLEID == id).all()
+    sample_id = sample[3:]
+    results = session.query(*query).filter(samples_metadata.SAMPLEID == sample_id).all()
     results = results[0]
     result = {}
     result['AGE'] = results[0]
@@ -118,6 +120,61 @@ def get_sample(sample):
     result['LOCATION'] = results[4]
     result['SAMPLEID'] = results[5]
 
+    return jsonify(result)
+
+@app.route('/wfreq/<sample>')
+def get_wfreq(sample):
+    """Weekly Washing Frequency as a number.
+
+    Args: Sample in the format: `BB_940`
+
+    Returns an integer value for the weekly washing frequency `WFREQ`
+    """
+    sample_id = sample[3:]
+    query = samples_metadata.WFREQ
+    results = session.query(query).filter(samples_metadata.SAMPLEID == sample_id).all()
+    
+    try:
+        return jsonify(results[0][0])
+    except:
+        return 'not found'
+    
+@app.route('/samples/<sample>')
+def get_samples(sample):
+    """OTU IDs and Sample Values for a given sample.
+
+    Sort your Pandas DataFrame (OTU ID and Sample Value)
+    in Descending Order by Sample Value
+
+    Return a list of dictionaries containing sorted lists  for `otu_ids`
+    and `sample_values`
+
+    [
+        {
+            otu_ids: [
+                1166,
+                2858,
+                481,
+                ...
+            ],
+            sample_values: [
+                163,
+                126,
+                113,
+                ...
+            ]
+        }
+    ]
+    """
+    df_sample = df_samples[ ['otu_id',sample] ]
+    df_sample = df_sample.sort_values(by=sample,axis=0,ascending=False)
+    #convert int to str so that we can jsonify the data
+    df_sample['otu_id']  = df_sample['otu_id'].apply(lambda x: str(x))
+    df_sample[sample] = df_sample[sample].apply(lambda x: str(x))
+    result = {}
+    for k in df_sample.keys():
+        result[k] = list(df_sample[k])
+    
     return jsonify(result)
 
 if __name__ == "__main__":
