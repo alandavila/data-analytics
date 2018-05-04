@@ -102,11 +102,34 @@ function initialize_page(){
         type: 'pie'
       }];
       var layout = {
+        title: 'OTU values frequendy',
         height: 400,
-        width: 500
+        width: 877
       };
-
       Plotly.plot('thepie', data, layout);
+
+      data = [{
+        y:otu_values,
+        x:otu_ids,
+        mode: 'markers',
+          marker:{
+            color:otu_ids,
+            size:otu_values
+          }
+      }];
+      layout = {
+        title: 'OTU values for each OTU ID',
+        height: 400,
+        width: 1010,
+        xaxis: {
+          title: 'OTU ID'
+        },
+        yaxis: {
+          title: 'Values'
+        }
+      };
+      Plotly.plot('thebubble', data, layout);
+
     })
   })
 }//initialize_page()
@@ -144,10 +167,34 @@ function optionChanged(value){
         type: 'pie'
       }];
       var layout = {
-        height: 400,
-        width: 500
+        title: 'OTU values frequendy'
+        //height: 400,
+        //width: 500
       };
       Plotly.newPlot('thepie', data, layout);
+
+      var data = [{
+        y:otu_values,
+        x:otu_ids,
+        mode: 'markers',
+          marker:{
+            color:otu_ids,
+            size:otu_values
+          }
+      }];
+      var layout = {
+        title: 'OTU values for each OTU ID',
+        //height: 400,
+        //width: 700,
+        xaxis: {
+          title: 'OTU ID'
+        },
+        yaxis: {
+          title: 'Values'
+        }
+      };
+      Plotly.newPlot('thebubble', data, layout);
+
     })
   })
 }//optionChanged(value)
