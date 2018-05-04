@@ -39,6 +39,70 @@
                 }
                 load_samples_dropdown();
 
+                function initialize_page(){
+
+                  //var current_sample = Plotly.d3.select("#selDataset").select('option').text()
+                  var initial_value = 'BB_940';
+                  var url = '/metadata/' + initial_value;
+                  console.log(url);
+                  Plotly.d3.json(url, function(error, response){
+                    if (error) return console.warn(error);
+                    var table = Plotly.d3.select('#sample_table');
+                    table.selectAll('tr').remove();
+                    table.selectAll('td').remove();
+                    table.selectAll('thead').remove();
+                    table.append('thead').text('Sample Metadata')
+                      .style('font-weight','bold');
+                    for (var key in response) {
+                      var val = response[key];
+                      var row = table.append('tr');
+                      row.append('td').text(key);
+                      row.append('td').text(val);
+                    }
+                  })
+
+                  var url = '/samples/'  + initial_value;
+                  var otu_values=[];
+                  var otu_ids = [];
+                  var otu_descriptions = [];
+                  Plotly.d3.json(url, function(error, response){
+                    if (error) console.warn(error);
+                    //console.log(response);
+                    for(var i = 0;i<10;i++){
+                      otu_values.push(response[initial_value][i]);
+                      otu_ids.push(response['otu_id'][i]);
+                    }
+                  })
+                  url = '/otu_descriptions'
+                  Plotly.d3.json(url, function(error, response){
+                    if (error) console.warn(error);
+                    //console.log(response);
+                    for(var i = 0;i<10;i++){
+                      otu_descriptions.push(response[otu_ids[i]]);
+                    }
+                  })
+                  //console.log(otu_descriptions);
+                  //**********all data is available, let;s plot********//
+                  console.log(otu_values);
+                  console.log(otu_ids);
+
+                  var data = [{
+                    values: otu_values,
+                    labels: otu_ids,
+
+                    type: 'pie'
+                  }];
+                  var layout = {
+                    height: 400,
+                    width: 500
+                  };
+
+                  Plotly.plot('thepie', data, layout);
+                  //Plotly.restyle('thepie', data, 0);
+                }
+
+
+
                 function optionChanged(value){
                   console.log(value);
                   var url = '/metadata/' + value;
@@ -59,21 +123,43 @@
                   })
 
                   var url = '/samples/' + value;
-                  var values=[];
+                  var otu_values=[];
                   var otu_ids = [];
-                  var otu_desc = [];
+                  var otu_descriptions = [];
                   Plotly.d3.json(url, function(error, response){
                     if (error) console.warn(error);
-                    console.log(response);
+                    //console.log(response);
                     for(var i = 0;i<10;i++){
-                      values.push(response[value][i]);
+                      otu_values.push(response[value][i]);
                       otu_ids.push(response['otu_id'][i]);
                     }
                   })
+                  url = '/otu_descriptions'
+                  Plotly.d3.json(url, function(error, response){
+                    if (error) console.warn(error);
+                    //console.log(response);
+                    for(var i = 0;i<10;i++){
+                      otu_descriptions.push(response[otu_ids[i]]);
+                    }
+                  })
+                  //console.log(otu_descriptions);
+                  //**********all data is available, let;s plot********//
+                  console.log(otu_values);
+                  console.log(otu_ids);
 
-                  
+                  var data = [{
+                    values: otu_values,
+                    labels: otu_ids,
 
-
+                    type: 'pie'
+                  }];
+                  var layout = {
+                    height: 400,
+                    width: 500
+                  };
+                  update = {'values':otu_values,'labels':otu_ids};
+                  //Plotly.plot('thepie', data, layout);
+                  Plotly.restyle('thepie', update,0);
                 }
 
               </script>
@@ -87,11 +173,11 @@
           </div>
           <div class='row'></div>
         </div>
-        <div class='col-md-6' class='pie'></div>
+        <div class='col-md-6' id='thepie'></div>
         <div class='col-md-6'></div>
       </div>
       <div class='row'></div>
     </div>
-
+    <script>  initialize_page();</script>
 </body>
 </html>

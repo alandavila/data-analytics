@@ -30,8 +30,9 @@ samples_metadata  = Base.classes.samples_metadata
 # Create our session (link) from Python to the DB
 session = Session(engine)
 ######################################################
-#Create a pandas df with contents of sampoles table
+#Create a pandas df with contents of samples table
 df_samples = pd.read_sql_table('samples', engine)
+df_otu = pd.read_sql_table('otu',engine)
 #################################################
 # Flask Setup
 #################################################
@@ -138,7 +139,27 @@ def get_wfreq(sample):
         return jsonify(results[0][0])
     except:
         return 'not found'
+@app.route('/otu_descriptions')
+def get_otu_descriptions():
+    """
+    get dictionary of otu id and description
+    [
+     {
+          1 : rchaea;Euryarchaeota;Halobacteria;Halobacteriales;Halobacteriaceae;Halococcus,
+          2 : Archaea;Euryarchaeota;Halobacteria;Halobacteriales;Halobacteriaceae;Halococcus,
+          3 : Archaea;Euryarchaeota;Halobacteria;Halobacteriales;Halobacteriaceae;Natronorubrum,
+          ...
     
+     }
+    ]
+    """
+    
+    df_otus = df_otu.copy(deep=True)
+    df_otus['otu_id']  = df_otus['otu_id'].apply(lambda x: str(x))
+    df_otus.set_index('otu_id', inplace=True)
+    response = df_otus['lowest_taxonomic_unit_found'].to_dict()
+    return jsonify(response)
+
 @app.route('/samples/<sample>')
 def get_samples(sample):
     """OTU IDs and Sample Values for a given sample.
