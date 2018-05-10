@@ -61,6 +61,7 @@ us_state_abbrev = {
 import pandas as pd
 import os
 
+
 skin_df = pd.read_csv(os.path.join('resources','BRFSS_2014_Overall_skin_cancer.csv'))
 skin_cancer = skin_df[['Locationabbr','Data_value']][skin_df['Response'] == 'Yes']
 skin_cancer.reset_index(inplace=True)
@@ -80,6 +81,25 @@ rent_df = rent_df.drop(rent_df.index[[51,52,53,54]])
 rent_df['State'] = rent_df['Locationabbr']
 rent_df['rent_percent'] = rent_df['Data_value']
 rent_df = rent_df[['State','rent_percent']]
+
+#dictionary of health factors to investigate in form of desired quesiton:answer
+health_qa = [('Ever told you had a stroke?','Yes'),
+             ('Ever told you had a heart attack (myocardial infarction)?','Yes'),
+             ('Ever told you had angina or coronary heart disease?','Yes'),
+             ('Ever told you that you have a form of depression?','Yes'),
+             ('Ever told you have kidney disease?','Yes'),
+             ('Ever told you had skin cancer?','Yes'),
+             ('What is your annual household income?','Less than $15,000'),
+             ('Do you own or rent your home?','Rent')
+             ]
+health_df = pd.read_csv(os.path.join('resources','BRFSS_2014_Overall_Own_or_Rent.csv'))
+#filter out df data to include desired questions/answers only
+health_df = health_df[health_df.Question == health_qa]
+#for question, answer in health_qa.items():
+#    health_df
+
+
+
 #join cancer rate and rent rate in same dataframe
 merged_df = pd.merge(skin_cancer, rent_df, how='inner', on='State')
 
