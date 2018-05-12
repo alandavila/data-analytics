@@ -75,7 +75,7 @@ health_qa = [{'question':'Ever told you had a stroke?','answer':'Yes'},
              {'question':'What is your annual household income?','answer':'Less than $15,000'},
              {'question':'Do you own or rent your home?','answer':'Rent'}
             ]
-qlabel = ['stroke', 'heart attack', 'angina', 'depression', 'kidney', 'skin cancer', 'low income', 'rent'] 
+qlabel = ['stroke', 'heart_attack', 'angina', 'depression', 'kidney', 'skin_cancer', 'low_income', 'rent'] 
 qval_label = [q + '_percent' for q in qlabel]
 
 #read in csv file --> pandas dataframe
