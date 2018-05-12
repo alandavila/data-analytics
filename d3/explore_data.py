@@ -76,7 +76,7 @@ health_qa = [{'question':'Ever told you had a stroke?','answer':'Yes'},
              {'question':'Do you own or rent your home?','answer':'Rent'}
             ]
 qlabel = ['stroke', 'heart attack', 'angina', 'depression', 'kidney', 'skin cancer', 'low income', 'rent'] 
-qval_label = [q + ' percent' for q in qlabel]
+qval_label = [q + '_percent' for q in qlabel]
 
 #read in csv file --> pandas dataframe
 health_df_in= pd.read_csv(os.path.join('resources','BRFSS_2014_Overall_Own_or_Rent.csv'))
@@ -110,7 +110,7 @@ foreign_df = pd.read_csv(os.path.join('resources','ACS_14_1YR_S0102','ACS_14_1YR
 #State, percentage of people over 60 with disabilities
 foreign_df = foreign_df[['GEO.display-label','HC02_EST_VC63']]
 foreign_df['State'] = foreign_df['GEO.display-label']
-foreign_df['over 60 disability percent'] = foreign_df['HC02_EST_VC63']
+foreign_df['over_60_disability_percent'] = foreign_df['HC02_EST_VC63']
 #foreign_df = foreign_df[['State','foreign_rent_percent','latino_percent']][1:]
 foreign_df = foreign_df.replace({'State':us_state_abbrev})
 
@@ -119,21 +119,21 @@ foreign_df = foreign_df.replace({'State':us_state_abbrev})
 #################################################################################################
 
 merged_df = pd.merge(merged_df, foreign_df, how='inner', on='State')
-merged_df['over 60 disability percent'] = merged_df['over 60 disability percent'].apply(lambda x: float(x)) 
+merged_df['over_60_disability_percent'] = merged_df['over_60_disability_percent'].apply(lambda x: float(x)) 
 
 #loop over health variables and pick the ones with higher correlation to save to csv file
 
 high_corr_vars = []
 for issue in qval_label:
-    merged_df.plot.scatter(x=issue, y='over 60 disability percent')
-    corr = merged_df[[issue,'over 60 disability percent']].corr(method='pearson')
+    merged_df.plot.scatter(x=issue, y='over_60_disability_percent')
+    corr = merged_df[[issue,'over_60_disability_percent']].corr(method='pearson')
     #print(corr)
-    if (corr.loc['over 60 disability percent', issue] > 0.55):
+    if (corr.loc['over_60_disability_percent', issue] > 0.55):
         high_corr_vars.append(issue)
     #x = input('continue?')
 
 print(f'\nVariables with high( > 0.55) correlation: {high_corr_vars}')
 
-over_60_risks_df = merged_df[high_corr_vars + ['State', 'over 60 disability percent']]
+over_60_risks_df = merged_df[high_corr_vars + ['State', 'over_60_disability_percent']]
 over_60_risks_df.set_index('State', inplace=True)
 over_60_risks_df.to_csv(os.path.join('resources','Over60_wDisabilities_risks.csv'))
