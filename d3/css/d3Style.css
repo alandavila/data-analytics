@@ -1,0 +1,12 @@
+.tooltip{
+  background: LightBlue;
+  border: 1px solid #e3e3e3;
+  border-color: Gold;
+  color: white;
+  text-align: center;
+
+}
+
+.xlabel, .ylabel {
+  font-weight: bold;
+}

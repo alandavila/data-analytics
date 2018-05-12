@@ -4,9 +4,11 @@
 	<meta charset="UTF-8">
 	<title>D3Times</title>
 	<link rel="stylesheet" href="css/style.css">
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified CSS & JS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 </head>
@@ -19,15 +21,27 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12  col-md-9 col-md-offset-0">
-				<div class="iframeContainer">
-					<!-- responsive iframe here that includes the d3.html file -->
+				<div class="iframeContainer embed-responsive-16by9 embed-responsive">
+					<iframe class="embed-responsive-item" src="d3.html"></iframe>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12  col-md-9 col-md-offset-0">
 				<div class="article">
-					<!-- analysis of the data -->
+					<p>
+						There is a strong correlation between the percentage of the population in a state that is over 60 years old and has a disability and the percentage of the
+						population that has had a stroke.
+						<br>
+						<br>
+						The spread of number of people with a disability over 60 is four times greater than the spread of number of people that has had a stroke. This means that even though
+						the correlation among the two variables is strong, the increase in people with disabilities reaching the age of 60 only increases the percentage of people suffering from
+						a stroke by a small percent.
+						<br>
+						<br>
+						It is worth noting that while the stoke percent seems to increase at a higher rate after a state's percentage of elder people with disabilities surpasses 35 percent, New
+						Mexico does not follow the trend. It would be interesting to investigate if such state has any programs that prevent people from suffering strokes.
+					</p>
 				</div>
 			</div>
 		</div>
