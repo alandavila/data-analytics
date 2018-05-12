@@ -61,6 +61,10 @@ us_state_abbrev = {
 import pandas as pd
 import os
 
+#################################################################################################
+#################### Import Health data into Pandas Dataframe ###################################
+#################################################################################################
+
 #list of dictionaries with question and answer I want to filter the data on 
 health_qa = [{'question':'Ever told you had a stroke?','answer':'Yes'},
              {'question':'Ever told you had a heart attack (myocardial infarction)?','answer':'Yes'},
@@ -98,24 +102,38 @@ cols = qval_label + ['State']
 merged_df = merged_df[cols]
 merged_df = merged_df.iloc[0:51] #remove us, puerto rico, etc
 
+#################################################################################################
+#################### Import Census data into Pandas Dataframe ###################################
+#################################################################################################
+
 foreign_df = pd.read_csv(os.path.join('resources','ACS_14_1YR_S0102','ACS_14_1YR_S0102_with_ann.csv'))
 #State, percentage of people over 60 with disabilities
 foreign_df = foreign_df[['GEO.display-label','HC02_EST_VC63']]
 foreign_df['State'] = foreign_df['GEO.display-label']
-foreign_df['families_poverty'] = foreign_df['HC02_EST_VC63']
+foreign_df['over 60 disability percent'] = foreign_df['HC02_EST_VC63']
 #foreign_df = foreign_df[['State','foreign_rent_percent','latino_percent']][1:]
 foreign_df = foreign_df.replace({'State':us_state_abbrev})
-#
+
+#################################################################################################
+#################### Merge Census and Health data into Pandas Dataframe #########################
+#################################################################################################
+
 merged_df = pd.merge(merged_df, foreign_df, how='inner', on='State')
-merged_df['families_poverty'] = merged_df['families_poverty'].apply(lambda x: float(x)) 
-#
+merged_df['over 60 disability percent'] = merged_df['over 60 disability percent'].apply(lambda x: float(x)) 
+
+#loop over health variables and pick the ones with higher correlation to save to csv file
+
+high_corr_vars = []
 for issue in qval_label:
-    merged_df.plot.scatter(x=issue, y='families_poverty')
-    corr = merged_df[[issue,'families_poverty']].corr(method='pearson')
-    print(corr)
-    x = input('continue?')
+    merged_df.plot.scatter(x=issue, y='over 60 disability percent')
+    corr = merged_df[[issue,'over 60 disability percent']].corr(method='pearson')
+    #print(corr)
+    if (corr.loc['over 60 disability percent', issue] > 0.55):
+        high_corr_vars.append(issue)
+    #x = input('continue?')
 
-#merged_df.plot.scatter(x='cancer_percent', y='latino_percent')
-#corr = merged_df[['cancer_percent','latino_percent']].corr(method='pearson')
-#print(corr)
+print(f'\nVariables with high( > 0.55) correlation: {high_corr_vars}')
 
+over_60_risks_df = merged_df[high_corr_vars + ['State', 'over 60 disability percent']]
+over_60_risks_df.set_index('State', inplace=True)
+over_60_risks_df.to_csv(os.path.join('resources','Over60_wDisabilities_risks.csv'))
