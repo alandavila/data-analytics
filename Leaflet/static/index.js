@@ -19,31 +19,20 @@ L.tileLayer("https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token
 
 // Grabbing our GeoJSON data..
 d3.json(link, function(data) {
+  L.geoJson(data, {
 
-  for (var i = 0; i < data.features.length; i++) {
-    // set the data location property to a variable
-    var location = data.features[i].geometry;
-    // If the data has a location property...
-    if (location) {
-      // Add a new marker to the map
-      var latlng = L.latLng(location.coordinates[1], location.coordinates[0]);
-      var magnitude = data.features[i].properties.mag;
-      L.circleMarker(latlng,
-        {radius:2*magnitude,
+    onEachFeature: function(feature, layer){
+
+      var latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+      var a_circle = L.circleMarker(latlng,
+        {radius:2* feature.properties.mag,
          fill:true,
-         color:getColor(magnitude),
+         color:getColor(feature.properties.mag),
          fillOpacity: 1.0
-       })
-       .on(
-         {click: function(event) {
-          layer = event.target;
-          layer.bindPopup("<h1>" what "</h1>");
-          }
-        })
-       .addTo(map);
-
+       }).bindPopup("<h3> Magnitude: " + feature.properties.mag   + " </h3>"
+                       + "<p> Place: "+ feature.properties.place + "<p>").addTo(map);
     }
-  }
+  });
 });
 
 var legend = L.control({position: 'bottomright'});
